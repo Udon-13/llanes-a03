@@ -5,6 +5,7 @@
 
 package baseline;
 
+import java.util.Scanner;
 
 /*
     method: passwordValidator (String pWord)
@@ -17,12 +18,6 @@ package baseline;
          int = call strong
          int = call veryStrong
         return int
- */
-
-/*
-    method: arrayMaker (String pWord)
-        char array = pWord to charArray
-        return array
  */
 
 /*
@@ -82,9 +77,123 @@ package baseline;
         4 = "very strong"
  */
 public class Solution25 {
-    /*
+    static int passwordValidator (String pWord)
+    {
+        int limit = pWord.length();
+        int check =0;
+        char[] array = pWord.toCharArray();
+        if(limit < 8)
+        {
+            check = veryWeak(array, limit);
+            check = weak(array, limit);
+        }
+        else
+        {
+            check = strong(array, limit);
+            check = veryStrong(array, limit, check);
+        }
+        return check;
+    }
+
+    static int veryWeak (char[] array, int limit)
+    {
+        for(int i=0; i<limit;i++)
+        {
+            if(array[i] < '0' && array[i] > '9')
+            {
+                return 0;
+            }
+        }
+        return 1;
+    }
+
+    static int weak (char[] array, int limit)
+    {
+        for(int i=0;i<limit;i++)
+        {
+            if((array[i] < 'A' && array[i] > 'Z') || (array[i] < 'a' && array[i] > 'z'))
+            {
+                return 0;
+            }
+        }
+        return 2;
+    }
+
+    static int strong (char[] array, int limit)
+    {
+        int numCount = 0;
+        int letterCount = 0;
+        for(int i=0;i<limit;i++)
+        {
+            if(array[i] >= '0' && array[i] <= '9')
+            {
+                numCount++;
+            }
+            if((array[i] >= 'A' && array[i] <= 'Z') || (array[i] >= 'a' && array[i] <= 'z'))
+            {
+                letterCount++;
+            }
+        }
+        if(numCount >0 && letterCount > 0)
+        {
+            return 3;
+        }
+        return 0;
+    }
+
+    static int veryStrong (char[] array, int limit, int check)
+    {
+        int numCount =0;
+        int letterCount =0;
+        int specialCount =0;
+        for(int i=0;i<limit;i++)
+        {
+            if(array[i] >= '0' && array[i] <= '9')
+            {
+                numCount++;
+            }
+            else if((array[i] >= 'A' && array[i] <= 'Z') || (array[i] >= 'a' && array[i] <= 'z'))
+            {
+                letterCount++;
+            }
+            else
+            {
+                specialCount++;
+            }
+        }
+
+        if(numCount >0 && letterCount > 0 && specialCount>0)
+        {
+            return 4;
+        }
+        return check;
+    }
+
+    static void output (String pWord, int check)
+    {
+        final String intro = "The password '";
+        switch (check) {
+            case 0 -> System.out.println(intro + pWord + "' is an average password.");
+            case 1 -> System.out.println(intro + pWord + "' is a very weak password.");
+            case 2 -> System.out.println(intro + pWord + "' is a weak password.");
+            case 3 -> System.out.println(intro + pWord + "' is a strong password.");
+            case 4 -> System.out.println(intro + pWord + "' is a very strong password.");
+            default -> System.out.println("Your password is irregular!?!");
+        }
+    }
+
+    public static void main(String[] args) {
+        /*
         prompt for password
         call passwordValidator
         call output
      */
+        Scanner input = new Scanner(System.in);
+        String pWord;
+        System.out.print("Enter a password: ");
+        pWord = input.next();
+        int check = passwordValidator(pWord);
+        output(pWord, check);
+
+    }
 }
