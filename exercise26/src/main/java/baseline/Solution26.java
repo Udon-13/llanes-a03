@@ -6,5 +6,7 @@ public class Solution26 {
             int month = call method from paymentCalc class
             output the months
          */
+        PaymentCalculator payCalc = new PaymentCalculator();
+        System.out.println("It will take you " + payCalc.calculateMonthsUntilPaidOff() + "months to pay off this card.");
     }
 }
